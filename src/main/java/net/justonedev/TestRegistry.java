@@ -42,4 +42,12 @@ public class TestRegistry {
         return getTests();
     }
 
+    public Optional<Response> getNextResponse(Interaction current) {
+        for (Test test : tests) {
+            Optional<Response> response = test.nextResponseIfMatches(current);
+            if (response.isPresent()) return response;
+        }
+        return Optional.empty();
+    }
+
 }

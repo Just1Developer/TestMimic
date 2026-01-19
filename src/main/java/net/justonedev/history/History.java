@@ -2,9 +2,12 @@ package net.justonedev.history;
 
 import net.justonedev.Interaction;
 import net.justonedev.Query;
+import net.justonedev.Response;
+import net.justonedev.ResponseType;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.StringJoiner;
 
 public class History {
 
@@ -44,6 +47,27 @@ public class History {
             if (!entry.equals(otherEntry)) return false;
         }
         return true;
+    }
+
+    public int size() {
+        return history.size();
+    }
+
+    public Response getConsecutiveOutputFromStartIndex(int startIndex) {
+        List<Entry> list = new ArrayList<>();
+        for (int index = startIndex; index < history.size() && history.get(index).type == EntryType.RESPONSE; index++) {
+            list.add(history.get(index));
+        }
+        StringJoiner responseJoiner = new StringJoiner(System.lineSeparator());
+        list.forEach(entry -> responseJoiner.add(entry.value));
+        String response = responseJoiner.toString();
+        ResponseType responseType;
+        if (list.isEmpty()) {
+            responseType = ResponseType.NONE;
+        } else {
+            responseType = ResponseType.STRING;
+        }
+        return new Response(response, responseType);
     }
 
     private record Entry(String value, EntryType type) {

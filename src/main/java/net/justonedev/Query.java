@@ -14,6 +14,10 @@ public class Query {
         this.result = result;
     }
 
+    public boolean isQuit() {
+        return hasQuery() && getQuery().equals(QUIT_COMMAND_NAME) && !hasReply();
+    }
+
     public String getQuery() {
         return query;
     }

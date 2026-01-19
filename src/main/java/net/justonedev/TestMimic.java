@@ -10,8 +10,8 @@ public final class TestMimic {
         //args = new String[] { "argument1", "arg2" };
 
         TestRegistry testRegistry = new TestRegistry(TESTS_FOLDER_PATH);
-        var tests = testRegistry.loadTests();
+        testRegistry.loadTests();
         TestHandler handler = new TestHandler(args);
-        handler.handle(tests);
+        handler.handle(testRegistry);
     }
 }

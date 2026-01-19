@@ -27,6 +27,18 @@ public class Test {
         return new History(interaction.getHistory()).isPrefixOfOther(this.history);
     }
 
+    public Optional<Response> nextResponseIfMatches(Interaction interaction) {
+        if (!this.matchesInteraction(interaction)) {
+            return Optional.empty();
+        }
+        int previousSize = new History(interaction.getHistory()).size();
+        if (previousSize >= history.size()) {
+            // Should never happen
+            return Optional.empty();
+        }
+        return Optional.of(history.getConsecutiveOutputFromStartIndex(previousSize));
+    }
+
     public static Optional<Test> importNew(File file) {
         try {
             List<String> lines = readFilePrimitive(file);

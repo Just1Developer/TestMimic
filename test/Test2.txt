@@ -1,5 +1,8 @@
 
 ---
 >a
+OK.
 >b
+B. LOL.
 >c
+>quit
