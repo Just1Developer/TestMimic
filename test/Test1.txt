@@ -1,4 +1,9 @@
 argument1 arg2
 ---
-what is your name?
-<Tobias
+>what is your name?
+Tobias
+>change name Tobias Mark
+>what is your name?
+Mark
+(Previously Tobias)
+>quit

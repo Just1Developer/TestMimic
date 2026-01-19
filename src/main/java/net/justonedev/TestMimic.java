@@ -1,7 +1,17 @@
 package net.justonedev;
 
-public class TestMimic {
+public final class TestMimic {
+
+    private static final String TESTS_FOLDER_PATH = "test";
+
+    private TestMimic() { }
+
     public static void main(String[] args) {
-        Interaction current = new Interaction(args);
+        //args = new String[] { "argument1", "arg2" };
+
+        TestRegistry testRegistry = new TestRegistry(TESTS_FOLDER_PATH);
+        var tests = testRegistry.loadTests();
+        TestHandler handler = new TestHandler(args);
+        handler.handle(tests);
     }
 }
