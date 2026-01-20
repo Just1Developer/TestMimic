@@ -35,7 +35,8 @@ public class TestRegistry {
 
     public List<Test> loadTests() {
         this.tests = new ArrayList<>();
-        for (File file : Objects.requireNonNull(testFolder.listFiles((dir, name) -> name.endsWith(".txt")))) {
+        for (File file : Objects.requireNonNull(
+                testFolder.listFiles((dir, name) -> name.endsWith(".txt") || name.endsWith(".protocol")))) {
             Optional<Test> importedTest = Test.importNew(file);
             importedTest.ifPresent((test) -> tests.add(test));
         }

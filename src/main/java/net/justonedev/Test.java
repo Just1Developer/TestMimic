@@ -9,9 +9,20 @@ import java.io.FileReader;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 public class Test {
+    private static final String REGEX_PREFIX = "!R!";
+    private static final Map<String, String> REGEX_REPLACEMENTS = Map.of(
+            "\\$", "$",
+            ".*", "Any String"
+    );
+    private static final Map<String, String> REGEX_REPLACEMENTS_ALL = Map.of(
+            "\\\\d+?", "1",
+            "\\\\s+?", " "
+    );
+
     private final String[] arguments;
     private final History history;
 
@@ -42,11 +53,34 @@ public class Test {
     public static Optional<Test> importNew(File file) {
         try {
             List<String> lines = readFilePrimitive(file);
-            String[] args = lines.getFirst().isBlank() ? new String[0] : lines.getFirst().split(" ");
+            boolean processingInput = false;
+            String[] args = new String[0];
+
             String inputBuffer = null;
             List<Query> queries = new ArrayList<>();
-            for (int i = 2; i < lines.size(); i++) {
-                String line = lines.get(i).trim();
+
+            for (String untrimmedLine : lines) {
+                String line = untrimmedLine.trim();
+                if (line.matches("^-+$")) {
+                    processingInput = true;
+                    continue;
+                }
+                if (!processingInput) {
+                    if (line.startsWith("name:") || line.startsWith("comment:")) {
+                        continue;
+                    }
+                    if (line.startsWith("args:")) {
+                        String argumentValues = line.replaceFirst("args:", "").trim();
+                        if (!argumentValues.isEmpty()) {
+                            args = argumentValues.split(" ");
+                        }
+                    }
+                    continue;
+                }
+
+                if (line.startsWith(REGEX_PREFIX)) {
+                    line = primitiveRegexReplace(line);
+                }
                 if (line.startsWith(">")) {
                     // Input
                     String input = line.substring(1).trim();
@@ -72,6 +106,17 @@ public class Test {
             // No handling needed, file exists if we get here.
         }
         return Optional.empty();
+    }
+
+    private static String primitiveRegexReplace(String line) {
+        String replaced = line.replaceFirst(REGEX_PREFIX, "");
+        for (var entry : REGEX_REPLACEMENTS.entrySet()) {
+            replaced = replaced.replace(entry.getKey(), entry.getValue());
+        }
+        for (var entry : REGEX_REPLACEMENTS_ALL.entrySet()) {
+            replaced = replaced.replaceAll(entry.getKey(), entry.getValue());
+        }
+        return replaced;
     }
 
     private static List<String> readFilePrimitive(File file) throws FileNotFoundException {

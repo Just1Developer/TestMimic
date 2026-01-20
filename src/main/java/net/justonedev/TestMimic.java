@@ -2,7 +2,7 @@ package net.justonedev;
 
 public final class TestMimic {
 
-    private static final String TESTS_FOLDER_PATH = "test";
+    private static final String TESTS_FOLDER_PATH = "test/Blatt5";
 
     private TestMimic() { }
 
