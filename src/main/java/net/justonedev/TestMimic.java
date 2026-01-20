@@ -1,15 +1,22 @@
 package net.justonedev;
 
-public final class TestMimic {
+import net.justonedev.testing.TestHandler;
+import net.justonedev.testing.TestRegistry;
 
-    private static final String TESTS_FOLDER_PATH = "test/Blatt5";
+/**
+ * A.
+ * @author uwwfh
+ */
+public final class TestMimic {
 
     private TestMimic() { }
 
+    /**
+     * A.
+     * @param args
+     */
     public static void main(String[] args) {
-        //args = new String[] { "argument1", "arg2" };
-
-        TestRegistry testRegistry = new TestRegistry(TESTS_FOLDER_PATH);
+        TestRegistry testRegistry = new TestRegistry(Testcases.TESTS);
         testRegistry.loadTests();
         TestHandler handler = new TestHandler(args);
         handler.handle(testRegistry);

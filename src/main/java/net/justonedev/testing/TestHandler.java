@@ -1,17 +1,34 @@
-package net.justonedev;
+package net.justonedev.testing;
 
-import java.util.List;
+import net.justonedev.query.Query;
+import net.justonedev.response.Response;
+import net.justonedev.response.ResponseType;
+
 import java.util.Optional;
 import java.util.Scanner;
 
+/**
+ * A.
+ * @author uwwfh
+ */
 public class TestHandler {
+
+    private static final String ERROR_MESSAGE_NO_MATCHING_TEST = "Error: Unknown Testcase.";
 
     private final Interaction currentInteraction;
 
+    /**
+     * A.
+     * @param args
+     */
     public TestHandler(String[] args) {
         currentInteraction = new Interaction(args);
     }
 
+    /**
+     * A.
+     * @param testRegistry
+     */
     public void handle(TestRegistry testRegistry) {
         try (Scanner scanner = new Scanner(System.in)) {
             String line;
@@ -23,7 +40,7 @@ public class TestHandler {
                 currentInteraction.addQuery(query);
                 Optional<Response> responseOpt = testRegistry.getNextResponse(currentInteraction);
                 if (responseOpt.isEmpty()) {
-                    System.out.println("Error: Unknown Testcase.");
+                    System.out.println(ERROR_MESSAGE_NO_MATCHING_TEST);
                     return;
                 }
                 Response response = responseOpt.get();

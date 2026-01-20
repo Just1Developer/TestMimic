@@ -1,18 +1,28 @@
 package net.justonedev.history;
 
-import net.justonedev.Interaction;
-import net.justonedev.Query;
-import net.justonedev.Response;
-import net.justonedev.ResponseType;
+import net.justonedev.query.Query;
+import net.justonedev.response.Response;
+import net.justonedev.response.ResponseType;
+import net.justonedev.testing.Interaction;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.StringJoiner;
 
+/**
+ * A.
+ * @author uwwfh
+ */
 public class History {
 
-    private List<Entry> history;
+    private static final int HISTORY_COMPARISON_BEGIN = 0;
 
+    private final List<Entry> history;
+
+    /**
+     * A.
+     * @param interaction
+     */
     public History(Interaction interaction) {
         history = new ArrayList<>();
         for (Query query : interaction.getHistory()) {
@@ -25,6 +35,10 @@ public class History {
         }
     }
 
+    /**
+     * A.
+     * @param interaction
+     */
     public History(List<Query> interaction) {
         history = new ArrayList<>();
         for (Query query : interaction) {
@@ -37,22 +51,38 @@ public class History {
         }
     }
 
+    /**
+     * A.
+     * @param other
+     * @return A.
+     */
     public boolean isPrefixOfOther(History other) {
         if (other.history.size() < history.size()) {
             return false;
         }
-        for (int i = 0; i < history.size(); i++) {
+        for (int i = HISTORY_COMPARISON_BEGIN; i < history.size(); i++) {
             Entry entry = history.get(i);
             Entry otherEntry = other.history.get(i);
-            if (!entry.equals(otherEntry)) return false;
+            if (!entry.equals(otherEntry)) {
+                return false;
+            }
         }
         return true;
     }
 
+    /**
+     * A.
+     * @return A.
+     */
     public int size() {
         return history.size();
     }
 
+    /**
+     * A.
+     * @param startIndex
+     * @return A.
+     */
     public Response getConsecutiveOutputFromStartIndex(int startIndex) {
         List<Entry> list = new ArrayList<>();
         for (int index = startIndex; index < history.size() && history.get(index).type == EntryType.RESPONSE; index++) {
@@ -70,10 +100,27 @@ public class History {
         return new Response(response, responseType);
     }
 
+    /**
+     * A.
+     * @param value
+     * @param type
+     * @author uwwfh
+     */
     private record Entry(String value, EntryType type) {
     }
 
+    /**
+     * A.
+     * @author uwwfh
+     */
     private enum EntryType {
-        QUERY, RESPONSE;
+        /**
+         * A.
+         */
+        QUERY,
+        /**
+         * A.
+         */
+        RESPONSE;
     }
 }
