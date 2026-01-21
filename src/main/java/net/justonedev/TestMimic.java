@@ -1,5 +1,6 @@
 package net.justonedev;
 
+import java.io.File;
 import net.justonedev.testing.TestHandler;
 import net.justonedev.testing.TestRegistry;
 
