@@ -1,16 +1,17 @@
 package net.justonedev.query;
 
 /**
- * A.
+ * The result of a query. Queries can simply continue the execution of the program,
+ * or they can indicate that the interaction is over and the program should quit.
  * @author uwwfh
  */
 public enum QueryResult {
     /**
-     * A.
+     * The query is intermediate, and the program should continue to execute.
      */
     CONTINUE,
     /**
-     * A.
+     * The program should quit after this.
      */
     QUIT;
 }

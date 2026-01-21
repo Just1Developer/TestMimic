@@ -8,7 +8,9 @@ import java.util.Optional;
 import java.util.Scanner;
 
 /**
- * A.
+ * The test handler handles an the currently active interaction with the given
+ * arguments and a test registry.
+ *
  * @author uwwfh
  */
 public class TestHandler {
@@ -18,16 +20,23 @@ public class TestHandler {
     private final Interaction currentInteraction;
 
     /**
-     * A.
-     * @param args
+     * Creates a new test handler with the current command line arguments.
+     * @param args the command line arguments.
      */
     public TestHandler(String[] args) {
         currentInteraction = new Interaction(args);
     }
 
     /**
-     * A.
-     * @param testRegistry
+     * Handles the interaction from start to finish, based on the provided tests loaded
+     * in the given {@link TestRegistry}.<br/>
+     * If an interaction occurs that is not known, so if no test case matches, the program
+     * will terminate with an error message stating that this is an unknown test case.
+     * <p>
+     *     The registry must already have all test cases loaded.
+     * </p>
+     *
+     * @param testRegistry The registry of loaded testcase.
      */
     public void handle(TestRegistry testRegistry) {
         try (Scanner scanner = new Scanner(System.in)) {

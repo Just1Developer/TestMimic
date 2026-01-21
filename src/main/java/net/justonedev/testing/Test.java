@@ -15,7 +15,10 @@ import java.util.Map;
 import java.util.Optional;
 
 /**
- * A.
+ * This class represents a final test case. The arguments and history are given at
+ * the beginning and cannot be modified afterwards. Tests also provide functionality for
+ * if they match the current interaction, and get expected replies if they match.
+ *
  * @author uwwfh
  */
 public final class Test {
@@ -55,11 +58,12 @@ public final class Test {
         this.history = new History(interaction);
     }
 
-    // todo private
     /**
-     * A.
-     * @param interaction
-     * @return A.
+     * If the interaction matches the testcase, comparing command line arguments and
+     * if the interaction history is a prefix of the test history.
+     *
+     * @param interaction the interaction to test
+     * @return If the interaction matches the test.
      */
     public boolean matchesInteraction(Interaction interaction) {
         return Arrays.equals(interaction.getArguments(), this.arguments)
@@ -67,9 +71,16 @@ public final class Test {
     }
 
     /**
-     * A.
-     * @param interaction
-     * @return A.
+     * Gets the next response for the interaction, so everything that should be printed.
+     * First tests if the interaction even matches, and if it does, returns the entire
+     * next expected output as a multiline string in a response, along with if there
+     * even is a response to be printed.
+     * <p>
+     *     If the interaction does not match the testcase, an empty optional is returned
+     *     instead.
+     * </p>
+     * @param interaction the current interaction.
+     * @return the response to give, if the interaction matches the test case.
      */
     public Optional<Response> nextResponseIfMatches(Interaction interaction) {
         if (!this.matchesInteraction(interaction)) {
@@ -84,9 +95,23 @@ public final class Test {
     }
 
     /**
-     * A.
-     * @param file
-     * @return A.
+     * Imports a new test case from a file. The format of the test case (currently) must
+     * match the format from Artemis. The format looks like this:
+     * <p>
+     *     {@code name: Test name (ignored)}<br/>
+     *     {@code comment: Test name (ignored)}<br/>
+     *     {@code args: Arguments, separated by space. Empty if no arguments.}<br/>
+     *     {@code -- (any amount of dashes only)}<br/>
+     *     {@code >input}<br/>
+     *     {@code output}<br/>
+     *     {@code ...}<br/>
+     *     {@code >quit (or any command to exit the program)}
+     * </p>
+     * <p>
+     *     If the file cannot be read, returns an empty optional instead.
+     * </p>
+     * @param file the test case file.
+     * @return A new test case, or an empty optional.
      */
     public static Optional<Test> importNew(File file) {
         List<String> lines;
@@ -100,9 +125,20 @@ public final class Test {
     }
 
     /**
-     * A.
-     * @param lines
-     * @return A.
+     * Imports a new test case from a list of strings. The format of the test case (currently) must
+     * match the format from Artemis. The format looks like this:
+     * <p>
+     *     {@code name: Test name (ignored)}<br/>
+     *     {@code comment: Test name (ignored)}<br/>
+     *     {@code args: Arguments, separated by space. Empty if no arguments.}<br/>
+     *     {@code -- (any amount of dashes only)}<br/>
+     *     {@code >input}<br/>
+     *     {@code output}<br/>
+     *     {@code ...}<br/>
+     *     {@code >quit (or any command to exit the program)}
+     * </p>
+     * @param lines the test case file.
+     * @return A new test case, or an empty optional.
      */
     public static Optional<Test> importNew(List<String> lines) {
         boolean processingInput = false;

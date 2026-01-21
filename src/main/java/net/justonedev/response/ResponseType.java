@@ -1,16 +1,17 @@
 package net.justonedev.response;
 
 /**
- * A.
+ * The type of a response. Responses cannot differentiate between no response
+ * and an empty response, so response types take care of that.
  * @author uwwfh
  */
 public enum ResponseType {
     /**
-     * A.
+     * The response has a string message.
      */
     STRING,
     /**
-     * A.
+     * The response has no message. Any content in the message is to be disregarded.
      */
     NONE;
 }

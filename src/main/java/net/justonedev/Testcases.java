@@ -1,12 +1,13 @@
 package net.justonedev;
 
 /**
- * A.
+ * Provides all known testcases for this task.
+ *
  * @author uwwfh
  */
 public final class Testcases {
     /**
-     * A.
+     * All test cases, encoded as a single string. Impressive, right?
      */
     public static final String TESTS = """
 name:§FUNCTIONAL§Basic:§change-priority%ncomment:§Tests§if§change-priority§command§basically§behaves§as§expected%nargs:%n--%n#setup%n>add§be

@@ -10,7 +10,8 @@ import java.util.Objects;
 import java.util.Optional;
 
 /**
- * A.
+ * The test registry is essentially a collection of tests that is loaded
+ * by the TestRegistry at runtime after construction.
  * @author uwwfh
  */
 public class TestRegistry {
@@ -29,7 +30,6 @@ public class TestRegistry {
 
     private List<Test> tests;
 
-    // todo remove for this time
     /**
      * A.
      * @param folder
@@ -44,9 +44,13 @@ public class TestRegistry {
     }
 
     /**
-     * A.
-     * @param testcases
-     * @throws IllegalArgumentException A.
+     * Creates a new TestRegistry with all testcases encoded as a single
+     * string. The linebreaks in the string are entirely ignored and
+     * immediately removed. Linebreaks in Files should be encoded with
+     * {@code %n}, Testcases separated by {@code %T}. Spaces should be
+     * encoded with the character {@code §}.
+     *
+     * @param testcases the entire list of testcases as a single string.
      */
     public TestRegistry(String testcases) {
         this.testFolder = null;
@@ -54,30 +58,30 @@ public class TestRegistry {
                 .replace(SPACE_ENCODING, SPACE_DECODING);
     }
 
-    // todo private
     /**
-     * A.
-     * @return A.
+     * Returns an unmodifiable list of all loaded tests. If the registry has not
+     * been loaded yet, an empty list is returned. That list is also unmodifiable.
+     * @return An unmodifiable list of tests.
      */
     public List<Test> getTests() {
         if (!isLoaded()) {
             return List.of();
         }
-        return new ArrayList<>(tests);
+        return List.copyOf(tests);
     }
 
-    // todo private
     /**
-     * A.
-     * @return A.
+     * Returns if the TestRegistry has been loaded using the {@link TestRegistry#loadTests()} method.
+     * @return True if the registry has been loaded, false if not.
      */
     public boolean isLoaded() {
         return tests != null;
     }
 
     /**
-     * A.
-     * @return A.
+     * Loads all tests from the registry, so from the given string (or folder) and stores them internally.
+     * Returns an unmodifiable copy of the loaded tests.
+     * @return an unmodifiable copy of the loaded tests.
      */
     public List<Test> loadTests() {
         if (this.testFolder != null) {
@@ -107,9 +111,14 @@ public class TestRegistry {
     }
 
     /**
-     * A.
-     * @param current
-     * @return A.
+     * Gets the next response for an interaction by matching the interaction with
+     * every loaded test case and returning its response, if present. The reponse
+     * also contains if the reply should be printed or if there is no response.
+     * <p>
+     *     If no test case matches, returns an empty optional.
+     * </p>
+     * @param current the current interaction.
+     * @return The next response for the given interaction, empty if no test matches.
      */
     public Optional<Response> getNextResponse(Interaction current) {
         for (Test test : tests) {
